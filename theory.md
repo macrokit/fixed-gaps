@@ -332,3 +332,11 @@ characteristic time-signatures of that motion.
    regularity, every reading of an additively drifting pair decomposes into
    the three time-signatures of §7 — decaying, one-way switching, and
    accumulating components.
+   **Resolved in [readings.md](readings.md):** false as a trichotomy — there
+   is an unavoidable fourth signature, *recurrent* readings (anniversary
+   cycles) — but true as an amended tetrachotomy. The three conjectured
+   types are recovered as the building blocks of all locally-BV readings,
+   the signature is computable from the reading's symmetry (with a
+   quantitative *hyperbolic fading law*: gap memory decays as $d/t$), and
+   the recurrent class factors through a new fixed gap valued in a quotient
+   group (the *phase gap*), strengthening the structuralist thesis.

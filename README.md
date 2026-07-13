@@ -20,6 +20,14 @@ order, potential differences.
   3. *Append-only worlds*: kinship and causal order are fixed because the
      past only accumulates — the stable facts are exactly the positive
      existential ones.
+- **[readings.md](readings.md)** — resolution of the open conjecture on
+  classifying "readings" (interpretations of a frozen gap): the conjectured
+  trichotomy is false — there is a fourth, *recurrent* signature
+  (anniversaries) — but the amended four-way classification is a theorem.
+  Highlights: the *hyperbolic fading law* (the felt size of a fixed gap
+  decays exactly like $d/t$, and felt gaps compress but never reorder), and
+  the *phase gap* (anniversary structure is itself a fixed gap, valued in a
+  circle group — ritual as the phenomenology of quotient torsors).
 
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant
