@@ -296,16 +296,31 @@ least shared measurement to verify.
 | Does the fading law survive noise? | In form yes; but noise dominates past $t^\ast \asymp (\Delta d)^2/\sigma^2$, and only affine readings stay E-fixed | §2 |
 | What freezes for $n$ objects, and how far does the invariant tower go? | Functions of the gap matrix; the tower gap → ratio → cross-ratio terminates (Tits), leaving order as the final invariant | §3 |
 
-Remaining genuinely open:
+Remaining genuinely open — *all three resolved in
+[forces.md](forces.md)*:
 
 1. **Heavy-tailed noise.** Thm 2.4's horizon assumed finite variance; under
    $\alpha$-stable idiosyncratic shocks the felt-order horizon should scale
    as $(\Delta d)^{\alpha}/\sigma^{\alpha}$ — is order *more* or less
    durable in a world of rare large shocks?
+   **Resolved (less, in every sense):** horizon $(\Delta d)^\alpha$, no
+   exponentially safe period, inversions caused by single identifiable
+   jumps; below $\alpha = 1$ the fading law itself disintegrates
+   (forces.md §1).
 2. **Interacting drifts.** Objects whose drift rates depend on their gaps
    (attraction/repulsion): when do fixed gaps survive as relative
    equilibria, and is there a Lyapunov version of the rigidity theorem?
+   **Resolved:** fixed gaps become critical points of a potential, durable
+   iff minima (Lyapunov rigidity); defended gaps fluctuate but never
+   dissolve under noise, reversing §2's verdict — maintenance joins ritual
+   and records (forces.md §2).
 3. **Higher dimensions.** On $\mathbb{R}^n$ or curved spaces the sharp
    transitivity ladder differs (isometries, conformal maps); compute the
    fundamental-invariant tower for the conformal group — the angle should
    appear where the ratio did.
+   **Resolved (confirmed and sharpened):** gap vector → shape/angle →
+   cross-ratio, terminating by Liouville rigidity; at maximal symmetry the
+   surviving invariants are the components of configuration space — order
+   on the line, cyclic order on the circle, nothing in dimension $\ge 2$.
+   Birth order is unkillable only because time is one-dimensional
+   (forces.md §3).

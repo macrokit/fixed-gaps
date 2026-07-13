@@ -38,6 +38,16 @@ order, potential differences.
   cross-ratio is one sharp-transitivity construction that provably
   terminates (Tits), leaving **birth order** as the invariant that survives
   both maximal symmetry and maximal noise.
+- **[forces.md](forces.md)** — the last three problems: heavy-tailed noise
+  makes order strictly less durable (horizon $(\Delta d)^\alpha$, no safe
+  period, inversions by single attributable shocks — erosion vs betrayal as
+  tail regimes); interacting drifts replace inertia with **defense**
+  (Lyapunov rigidity: fixed gaps as energy minima; defended gaps fluctuate
+  but never dissolve — maintenance joins ritual and records); and in higher
+  dimensions the ladder runs gap vector → angle → cross-ratio and stops
+  (Liouville), while at maximal symmetry the survivors are the components
+  of configuration space — so **order is the privilege of a
+  one-dimensional time**: on a plane, no invariant survives at all.
 
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant
