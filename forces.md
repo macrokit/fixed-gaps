@@ -173,7 +173,7 @@ $d\delta = \psi(\delta)\,dt + \sqrt{2}\,\sigma\, dB$. Then:
    \infty$ (frontier.md 2.2).
 2. **Defended gaps** persist: the linearized gap is an Ornstein–Uhlenbeck
    process with *stationary* distribution
-   $\mathcal{N}\!\big(\delta^\ast,\ \sigma^2/(2k)\big)$ — fluctuation
+   $\mathcal{N}\!\big(\delta^\ast,\ \sigma^2/k\big)$ — fluctuation
    bounded uniformly in time. Felt order between defended gaps separated by
    more than a few stationary standard deviations retains a *permanent*
    positive signal-to-noise ratio: the felt-order horizon of frontier.md 2.4
@@ -189,8 +189,9 @@ $d\delta = \psi(\delta)\,dt + \sqrt{2}\,\sigma\, dB$. Then:
    lost in one identifiable blow."
 
 *Proof sketch.* (1) is frontier.md 2.2. (2): linearize; OU stationary
-variance is (noise rate)/(2·restoring rate) $= 2\sigma^2/(4k)$; order
-comparison as in frontier.md 2.4 but with $t$-independent variances. (3):
+variance is (noise variance rate)/(2·restoring rate) $= 2\sigma^2/(2k) =
+\sigma^2/k$; order comparison as in frontier.md 2.4 but with
+$t$-independent variances. (3):
 classical Kramers / Lévy-flight exit asymptotics. ∎
 
 **2.5 The maintenance triptych becomes a quartet.** Frontier.md §2.6 ended

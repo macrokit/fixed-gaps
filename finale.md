@@ -80,7 +80,7 @@ exhaust the phenomenology:
 **1.4 The early-warning theorem.** All three deaths are preceded by the same
 observable signature. Near melting, $k(s) \to 0$ (tip) or the effective
 barrier shrinks (leak), and the stationary fluctuation of the defended gap
-is $\sigma^2/(2k)$ with autocorrelation time $1/k$: **the variance of a
+is $\sigma^2/k$ with autocorrelation time $1/k$: **the variance of a
 defended gap inflates, and its recovery from perturbations slows, before it
 dies.** This is critical slowing down, familiar as the early-warning signal
 of tipping points in climate and ecosystems — here derived as a general fact

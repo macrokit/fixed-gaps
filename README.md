@@ -1,5 +1,9 @@
 # fixed-gaps
 
+**[fixed-gaps.pdf](fixed-gaps.pdf)** — the complete monograph (38 pages,
+typeset), assembling all six documents below with a preface. Rebuild with
+`pandoc` + `tectonic` from the markdown sources.
+
 An essay and a mathematical theory about **fixed gaps**: relations between
 two entities — people or objects — that are frozen the moment they become
 defined and never change afterward. Age differences, blood relations, causal
