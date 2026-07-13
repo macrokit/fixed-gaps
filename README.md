@@ -48,6 +48,17 @@ order, potential differences.
   (Liouville), while at maximal symmetry the survivors are the components
   of configuration space — so **order is the privilege of a
   one-dimensional time**: on a plane, no invariant survives at all.
+- **[finale.md](finale.md)** — the close of the arc: defended gaps die in
+  three ways (snap, tip, leak), all announced by rising variance — critical
+  slowing down as a general early-warning theorem; gap networks reveal that
+  frustration is cohomology (the original theory is the frustration-free
+  case) and that a gap's noise-fluctuation equals effective resistance —
+  hierarchies defended only locally drift apart, and archives are the
+  long-range edges that hold networks rigid; and the Lorentzian ladder runs
+  interval → twin-ratio → CFT cross-ratio, with Zeeman's theorem showing
+  that **causal order alone generates the geometry**. Causal set theory
+  supplies the ending: the world does not *have* a gap structure — it *is*
+  one, and spacetime is its reading.
 
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant

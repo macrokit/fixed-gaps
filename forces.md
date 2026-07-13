@@ -301,18 +301,33 @@ cross-ratio and order (frontier); and now — black swans break order
 attributably, forces replace inertia with defense, and order itself is the
 privilege of a one-dimensional time (forces).
 
-Still genuinely open:
+Still genuinely open — *all three resolved in [finale.md](finale.md)*:
 
 1. **Defended gaps under structural change.** Thm 2.4 treats a static
    potential $V$; let $V$ itself drift slowly (institutions decay, forces
    weaken). Adiabatic theory of defended gaps: how slowly must $V$ change
    for a defended gap to track its moving equilibrium, and is there a
    critical melting rate?
+   **Resolved:** tracking lag = rate/stiffness; three deaths (snap, tip
+   with an $\epsilon^{2/3}$ overshoot law, leak), all announced by rising
+   variance — critical slowing down as a general early-warning theorem for
+   defended invariants (finale.md §1).
 2. **Networks of gaps.** $n$-body interactions on a graph (only some pairs
    interact): when does local defense of gaps imply global rigidity of the
    configuration? This is a fixed-gap version of rigidity percolation.
+   **Resolved:** on the line, rigidity = connectivity; realizability of
+   preferred gaps is exactness of a 1-cochain (frustration = cohomology,
+   with the original gap structures as the frustration-free case), and gap
+   fluctuation = noise × effective resistance — chains lose long-range
+   order, expanders keep it, records are long-range edges (finale.md §2).
 3. **The Lorentzian ladder.** Compute the fundamental-invariant tower for
    the causal group of Minkowski space (arity by arity, as in §3.1), with
    Alexandrov–Zeeman as the termination theorem. The conjecture: the proper
    time along a chain plays the gap's role, and the tower is shorter than
    the conformal one.
+   **Resolved (conjecture half right):** the tower has the same three rungs
+   — interval, interval ratios (the twin observable), interval cross-ratios
+   (the CFT invariants) — but the discrete bottom rung is self-sufficient:
+   by Zeeman's theorem, causal order alone generates the geometry in
+   dimension $\ge 3$. Age is the longest causal chain; causal set theory
+   supplies the closing inversion (finale.md §3).
