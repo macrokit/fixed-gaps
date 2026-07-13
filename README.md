@@ -1,8 +1,14 @@
 # fixed-gaps
 
-**[fixed-gaps.pdf](fixed-gaps.pdf)** — the complete monograph (38 pages,
-typeset), assembling all six documents below with a preface. Rebuild with
+**[fixed-gaps.pdf](fixed-gaps.pdf)** — the complete monograph (46 pages,
+typeset), assembling all documents below with a preface. Rebuild with
 `pandoc` + `tectonic` from the markdown sources.
+
+**[paper/paper.pdf](paper/paper.pdf)** — a standalone, submission-ready
+paper (7 pages): *Rating Gaps and Effective Resistance: Exact Fluctuation
+Laws for Elo and Bradley–Terry Systems* — the three laws, proofs,
+simulations, and the Arena validations, with related work and
+bibliography. LaTeX source in [paper/](paper/).
 
 An essay and a mathematical theory about **fixed gaps**: relations between
 two entities — people or objects — that are frozen the moment they become

@@ -1,0 +1,404 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\definecolor{linkblue}{rgb}{0.1,0.15,0.5}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Reff}{R_{\mathrm{eff}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+
+\title{Rating Gaps and Effective Resistance:\\
+Exact Fluctuation Laws for Elo and Bradley--Terry Systems}
+\author{The \textit{fixed-gaps} authors\thanks{Code, data pipelines, and the
+companion monograph are available at
+\url{https://github.com/macrokit/fixed-gaps}. This paper develops Chapter 7
+of the monograph.}}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A rating system is a network: players are nodes, matches are edges, and
+ratings are node potentials whose differences predict outcomes. We show
+that the fluctuation behavior of rating \emph{gaps} is governed by a single
+question --- \emph{where noise enters the network relative to where matches
+defend it} --- and that the answer splits rating systems into three regimes
+with three different laws. (i)~\emph{Estimation}: the variance of the
+maximum-likelihood estimate of any rating gap equals the effective
+resistance between the two players in the match graph, with Fisher
+conductances. (ii)~\emph{Dynamics with static skills}: the stationary gap
+fluctuation of online Elo is $K$ (the update factor) for \emph{every} pair
+on \emph{every} connected graph --- outcome noise and restoring force enter
+through the same edges and their graph dependence cancels exactly.
+(iii)~\emph{Dynamics with drifting skills}: idiosyncratic skill drift
+restores the resistance law as the tracking error, with mean reversion
+acting as a grounding conductance on every node. All three laws are
+verified in simulation; the estimation law is additionally confirmed on
+up to 104{,}419 real Chatbot Arena battles with a zero-parameter fit
+(slope $1.035$--$1.041$ against the theoretical $1$, $R^2 \ge 0.958$), in
+both dense and clustered battle graphs. The clustered experiment --- two
+collection eras joined by five bridge models --- confirms the framework's
+distinctive prediction: the resistance law stays calibrated where the
+battle-count heuristic drifts by $17\%$, and quantifies how the
+comparability of $103$ models across a year of LLM history rests on five
+survivors. Applications include resistance-based leaderboard confidence
+intervals, a matchmaking design rule, and a structural explanation of
+chess's era problem.
+\end{abstract}
+
+\section{Introduction}
+
+Pairwise-comparison rating systems --- Elo in chess \cite{elo1978}, its
+Bradley--Terry foundation \cite{zermelo1929,bradleyterry1952}, Glicko
+\cite{glickman1999}, TrueSkill \cite{trueskill2006}, and most recently
+LLM leaderboards such as Chatbot Arena \cite{chiang2024} --- share one
+structure: a set of entities, a graph of realized comparisons, and a
+vector of ratings whose pairwise \emph{differences} are the only
+predictive content. The absolute level of a rating is pure convention (the
+familiar incomparability of ratings across pools); the gaps are the
+physics.
+
+This paper studies the fluctuations of those gaps and shows they are
+organized by a single structural question:
+\begin{quote}
+\emph{Where does randomness enter the comparison network, relative to
+where the matches act?}
+\end{quote}
+Three answers give three laws. Randomness in \emph{outcomes} enters on the
+edges --- the same edges through which every match pulls the rating gap
+toward the observed result. Randomness in \emph{true skills} (players
+improving and declining) enters at the nodes. And randomness \emph{common}
+to all players enters nowhere: it cancels from every gap identically.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item \textbf{Estimation resistance law} (Thm.~\ref{thm:est}). The
+variance of the maximum-likelihood estimate of any rating gap --- between
+any two players, whether or not they ever met --- equals the effective
+resistance between them in the match graph with Fisher conductances. The
+ingredients are classical; the identification of the inverse Fisher
+information as a resistance, and the consequences drawn from it, appear
+not to have been exploited in the rating literature.
+\item \textbf{Isotropy of online Elo} (Thm.~\ref{thm:iso}). With static
+skills, the stationary fluctuation of the rating gap under online Elo
+with update factor $K$ is $\Var(r_i - r_j) = K$ for every pair, on every
+connected match graph: a path and a complete graph produce identical
+long-run churn. To our knowledge this graph-independence is unobserved in
+the literature; it is invisible unless one asks the noise-location
+question, since it results from an exact cancellation between edge noise
+and edge defense.
+\item \textbf{Tracking resistance law} (Thm.~\ref{thm:track}). When true
+skills drift idiosyncratically (variance rate $\sigma_d^2$ per node), the
+resistance law returns as the stationary \emph{tracking} error:
+$\Var\!\big((r_i - r_j) - (s_i - s_j)\big) = K + \tfrac{2|E|\sigma_d^2}{K}
+\Reff(i,j)$, and mean reversion of skills at rate $\theta$ replaces
+$\Reff$ by the resistance of the network in which every node is grounded
+through conductance $\theta/a$. Without mean reversion, the logistic
+saturates and no bounded-update system can track at all
+(Prop.~\ref{prop:sat}).
+\item \textbf{Validation.} All laws verified in controlled simulation
+(\S\ref{sec:sim}); the estimation law verified on real Chatbot Arena data
+with no free parameters, in a dense regime (39{,}241 battles, 60 models,
+slope $1.035$, $R^2=0.958$) and in a clustered two-era regime (104{,}419
+battles, 108 models, slope $1.041$, $R^2 = 0.963$), where the framework's
+distinctive prediction --- calibration of the resistance prediction
+where the count heuristic fails --- is confirmed (\S\ref{sec:arena}).
+\item \textbf{Design consequences} (\S\ref{sec:design}): resistance-based
+confidence intervals for leaderboards; a matchmaking rule (bridge
+comparisons dominate: one cross-cluster match outperformed a
+within-cluster match by a factor ${\sim}44$ on worst-pair resistance in
+our test configuration); and a derivation of chess's era-comparison
+problem as a chain instability, together with an explanation of why
+Arena's era problem is mild.
+\end{enumerate}
+
+\section{Setup}\label{sec:setup}
+
+Players $1,\dots,n$ carry true skills $s \in \mathbb{R}^n$; player $i$
+beats $j$ with probability $\sigma(s_i - s_j)$, $\sigma(x) = (1 +
+e^{-x})^{-1}$ (Bradley--Terry; Elo's base-$10$/$400$ scale is a linear
+change of units). The \emph{match graph} $G = (V, E)$ records which pairs
+play; $L$ denotes its Laplacian and, for conductances $c_e$ on the edges,
+$L_c$ the weighted Laplacian. The \emph{effective resistance} between $i$
+and $j$ is $\Reff(i,j) = (e_i - e_j)^\top L_c^{+} (e_i - e_j)$ with
+$L_c^{+}$ the pseudoinverse \cite{doylesnell1984}. Online Elo updates,
+after a match on edge $(i,j)$ with score $x \in \{0,1\}$:
+\[
+r_i \mathrel{+}= K\big(x - \sigma(r_i - r_j)\big), \qquad
+r_j \mathrel{-}= K\big(x - \sigma(r_i - r_j)\big),
+\]
+which is stochastic gradient ascent on the Bradley--Terry log-likelihood
+\cite{mandt2017}. Matches arrive uniformly on $E$; linearizing about
+small gaps ($\sigma'(0) = \tfrac14$) gives the drift--diffusion
+\begin{equation}\label{eq:lin}
+dr = a\,L\,(s - r)\,dt + dM, \qquad a = \frac{K}{4|E|}, \qquad
+\mathrm{Cov}(dM) = \frac{K^2}{4|E|}\,L\,dt .
+\end{equation}
+The structural fact driving everything below: \emph{the noise covariance
+and the restoring force are built from the same Laplacian}, because in a
+rating system every observation of a gap is also a defense of it.
+
+\section{Three laws}\label{sec:laws}
+
+\begin{theorem}[Estimation resistance law]\label{thm:est}
+With $n_e$ matches on edge $e$ and static skills, the Fisher information
+of the Bradley--Terry model is $L_c$ with $c_e = n_e\, p_e(1-p_e)$, $p_e =
+\sigma(s_i - s_j)$. Hence, asymptotically, for every pair $(i,j)$,
+\[
+\Var\big(\widehat{r_i - r_j}\big) \;=\; \Reff(i,j)
+\quad\text{in the match graph with Fisher conductances;}
+\]
+at equal skills and $m$ matches per edge this is $(4/m)\,
+\Reff^{\mathrm{unit}}(i,j)$.
+\end{theorem}
+
+\begin{proof}
+The log-likelihood Hessian at the truth is $-\sum_e n_e\, p_e(1-p_e)(e_i -
+e_j)(e_i - e_j)^\top = -L_c$; the MLE covariance on the mean-zero gauge is
+$L_c^{+}$, and the variance of the contrast $(e_i - e_j)^\top \hat r$ is
+the stated quadratic form, i.e.\ the resistance \cite{ghoshboydsaberi2008}.
+\end{proof}
+
+Uncertainty about a gap is thus a property of the \emph{network between}
+the pair --- parallel comparison paths add like parallel conductances ---
+not of the two players' match counts.
+
+\begin{theorem}[Isotropy of stationary Elo]\label{thm:iso}
+Under \eqref{eq:lin} with static equal skills, the stationary covariance
+of $r$ on the mean-zero subspace is $\Sigma = \tfrac{K}{2} P$ (with $P$
+the centering projector). Consequently
+\[
+\Var(r_i - r_j) \;=\; K \qquad \text{for every pair, on every connected
+match graph.}
+\]
+\end{theorem}
+
+\begin{proof}
+The stationary Lyapunov equation for $dr = -aLr\,dt + dM$ is $aL\Sigma +
+\Sigma L a = \frac{K^2}{4|E|} L$. Since drift and noise are simultaneously
+diagonalizable (both are $L$), $\Sigma = \frac{K^2/(4|E|)}{2a} P =
+\frac{K}{2}P$ on the range of $L$, and $(e_i - e_j)^\top P (e_i - e_j) =
+2$.
+\end{proof}
+
+The graph dependence cancels exactly: a poorly connected pair receives
+less restoring force but, in the same proportion, less noise. Online
+Elo's long-run churn is graph-independent --- contrary to the natural
+intuition that remote pairs should wander more, and, to our knowledge,
+unremarked in the rating literature.
+
+\begin{theorem}[Tracking resistance law]\label{thm:track}
+Let true skills drift idiosyncratically, $ds = \sigma_d\, dW$ (independent
+across players), and let $e = r - s$ be the tracking error under
+\eqref{eq:lin}. Then in stationarity
+\[
+\Var(e_i - e_j) \;=\; \underbrace{K}_{\text{edge noise
+(Thm.~\ref{thm:iso})}} \;+\; \underbrace{\frac{2|E|\,\sigma_d^2}{K}\,
+\Reff(i,j)}_{\text{node noise: the resistance law}} .
+\]
+If instead skills are mean-reverting, $ds = -\theta s\,dt + \sigma_d\,dW$,
+the exact linear theory replaces $\Reff$ by the \emph{grounded resistance}
+--- the quadratic form of $(L + (\theta/a) I)^{-1}$: mean reversion is a
+grounding wire of conductance $\theta/a$ on every node.
+\end{theorem}
+
+\begin{proof}
+Mode-by-mode on the eigenbasis of $L$ (eigenvalue $\lambda$): the error
+obeys $de_\lambda = -a\lambda\, e_\lambda\,dt + (\text{edge noise, rate }
+\tfrac{K^2}{4|E|}\lambda) - (\text{node noise, rate } \sigma_d^2)$, giving
+stationary variance $\frac{K}{2} + \frac{\sigma_d^2}{2a\lambda}$; summing
+$\lambda^{-1}$ against the pair contrast yields $\Reff$. With mean
+reversion the transfer function from skill noise to error acquires the
+factor $-i\omega/\big((i\omega + \theta)(i\omega + a\lambda)\big)$, whose
+integrated power replaces $(a\lambda)^{-1}$ by $(\theta +
+a\lambda)^{-1}$, i.e.\ grounds the network.
+\end{proof}
+
+\begin{proposition}[Saturation: the era catastrophe]\label{prop:sat}
+If skills random-walk without mean reversion, skill gaps grow without
+bound, $\sigma'(s_i - s_j) \to 0$, and the linearization gain in
+\eqref{eq:lin} collapses: the tracking error of a bounded-update system
+diverges on every graph.
+\end{proposition}
+
+Common shocks --- randomness applied to all players alike --- cancel from
+every gap identically and are invisible to all three laws: only
+\emph{asymmetric} randomness moves gaps. The trichotomy
+common/node/edge is exhaustive and is the organizing principle of this
+paper.
+
+\section{Simulation}\label{sec:sim}
+
+We verify the laws against the \emph{actual} (nonlinear, discrete) Elo
+dynamics, not the linearization. Configurations: $n = 12$--$16$ players on
+path, cycle, two-clique-plus-two-bridges, random 3-regular, and complete
+graphs; $K = 0.1$. Code and committed output accompany the paper.
+
+\textbf{Thm.~\ref{thm:est}}: regressing empirical MLE gap-error variance
+(600 trials, 40 matches/edge) on $(4/m)\Reff$ over all pairs gives slope
+$1.006$--$1.027$ (theory $1$) with $R^2$ up to $0.994$ across the graph
+families (the complete graph has all resistances nearly equal, hence no
+variance to explain).
+
+\textbf{Thm.~\ref{thm:iso}}: online Elo, $4 \times 10^6$ steps, static
+skills: mean stationary gap variance $0.1055$--$0.1060$ against the
+predicted $K = 0.1$ (the small excess is the expected nonlinear
+correction), and flat in resistance --- on the path, the low-resistance
+half of pairs shows $0.1056$ and the high-resistance half $0.1064$.
+
+\textbf{Thm.~\ref{thm:track}}: drifting skills ($\sigma_d = 0.004$,
+$\theta = 10^{-4}$, $8\times10^6$ steps): tracking-error variance is
+linear in $\Reff$ (path $R^2 = 0.95$, two-cluster $0.90$), intercept
+$0.106/0.105$ vs.\ the predicted $K = 0.1$; measured slopes $0.00206$
+(path) and $0.00964$ (two-cluster) against exact grounded-theory values
+$0.00213$ (3\%) and $0.00812$ (within 20\%), with the naive ungrounded
+value ($0.00352$ on the path) clearly rejected.
+
+\textbf{Prop.~\ref{prop:sat}}: with $\theta = 0$ the path-graph tracking
+variance reaches ${\sim}60\times$ the defended level and keeps growing.
+
+\section{Real data: Chatbot Arena}\label{sec:arena}
+
+\subsection{Dense regime}
+From the public 55k Arena preference dataset we retain decisive battles
+among models with $\ge 200$ of them: $39{,}241$ battles, $60$ models,
+$1{,}145$ of $1{,}770$ pairs realized (density $0.65$). We fit the
+Bradley--Terry MLE, compute the predicted variance of every pairwise gap
+as the Fisher resistance (Thm.~\ref{thm:est}), and compare against $200$
+bootstrap resamples of the battles. The theory has no free parameters:
+the predicted slope is exactly $1$. Over all $1{,}770$ pairs:
+\[
+\text{slope} = 1.035, \qquad \text{corr} = 0.979, \qquad
+R^2_{\text{through origin}} = 0.958 .
+\]
+The law is quantitatively right at the few-percent level, simultaneously
+across every pair, including the majority that never met. On this dense
+graph the folk heuristic $1/n_i + 1/n_j$ also correlates well (log--log
+$0.956$ vs.\ $0.987$ for resistance): in dense graphs the resistance
+approximately \emph{reduces} to the count formula --- the theory explains
+when the heuristic works and predicts where it fails, namely clustered
+graphs. Which motivates:
+
+\subsection{Clustered regime: the era experiment}
+Merging the 55k collection (2023--early 2024) with the 100k collection
+(June--August 2024) yields a two-era graph: $104{,}419$ decisive battles,
+$108$ models --- $55$ exclusive to era~1, $48$ exclusive to era~2, and a
+\textbf{five-model bridge} (three GPT-4 variants, GPT-3.5-turbo, Mixtral)
+through which all $55 \times 48 = 2{,}640$ cross-era comparisons must
+route, since era-exclusive models never coexisted. Findings:
+\begin{enumerate}
+\item The resistance law holds on the clustered graph: slope $1.041$,
+corr $0.982$, $R^2 = 0.963$ over all $5{,}778$ pairs.
+\item Calibrating the count heuristic on within-era pairs and evaluating
+the median ratio of bootstrap variance to prediction: the resistance
+prediction reads $1.01$ within-era and $1.01$ cross-era ---
+identically calibrated in both regimes with no adjustment --- while the
+count heuristic reads $0.92$ within vs.\ $1.08$ cross, a systematic
+$17\%$ spread in the predicted direction.
+\item The bridge is load-bearing: deleting a single bridge model's
+battles raises median cross-era resistance by up to $8\%$; deleting all
+five disconnects the eras --- cross-era gaps become infinitely
+uncertain. The comparability of $103$ models across a year of LLM
+history rests, in this precise sense, on five survivors.
+\item Arena's cross-era penalty is nonetheless mild (${\sim}8\%$ in
+variance at matched counts), because its bridge models are battle-rich:
+the platform keeps old flagships in rotation, which is exactly the
+long-range-edge prescription of \S\ref{sec:design}. Chess, whose
+bridges (individual careers spanning eras) are thin and unreplayable,
+is the same graph with weak bridges --- hence its severe era problem.
+\end{enumerate}
+
+\section{Design consequences}\label{sec:design}
+
+\paragraph{Resistance-based confidence intervals.} By
+Thm.~\ref{thm:est}, leaderboard uncertainty for ``$A$ vs.\ $B$'' should
+be reported as the resistance between $A$ and $B$ in the battle graph.
+Two models with thousands of battles each but no common opponents can
+have arbitrarily uncertain relative rank; conversely a lightly played
+model wired into a well-connected neighborhood can be sharply placed.
+
+\paragraph{Matchmaking.} To sharpen a leaderboard fastest, schedule the
+comparison that most reduces the (grounded) resistance of the pairs of
+interest. In our two-cluster test, one bridge match reduced worst-pair
+resistance from $1.000$ to $0.778$; one more within-cluster match, to
+$0.995$ --- a ${\sim}44\times$ difference per match. Platforms that
+matchmake for entertainment systematically overspend on low-resistance
+edges.
+
+\paragraph{The era problem.} The temporal comparison graph of a
+long-lived rating pool is chain-like; by Thm.~\ref{thm:track} cross-era
+gaps drift with variance linear in era separation (and by
+Prop.~\ref{prop:sat}, without anchoring, tracking eventually fails
+outright). Known remedies map onto the theory: anchoring to a fixed
+reference is grounding; careers spanning eras are long-range edges;
+Arena's bridge-rich rotation policy is the design rule implemented.
+
+\section{Related work}\label{sec:related}
+
+The Bradley--Terry model and its MLE date to \cite{zermelo1929,
+bradleyterry1952}; Elo's system to \cite{elo1978}; measurement-error
+refinements include Glicko \cite{glickman1999} and TrueSkill
+\cite{trueskill2006}. Effective resistance is classical in the
+random-walk literature \cite{doylesnell1984} and appears in optimal
+experiment design and network analysis \cite{ghoshboydsaberi2008}; the
+interpretation of SGD's stationary distribution as an
+Ornstein--Uhlenbeck process follows \cite{mandt2017}. Chatbot Arena and
+its Bradley--Terry leaderboard are described in \cite{chiang2024}, which
+computes bootstrap confidence intervals; our Thm.~\ref{thm:est} gives
+those intervals a closed structural form, and \S\ref{sec:arena} verifies
+it. We are not aware of prior statements of the isotropy law
+(Thm.~\ref{thm:iso}) or of the grounded-resistance tracking law
+(Thm.~\ref{thm:track}) in this setting. The general framework relating
+noise location, defended invariants, and effective resistance is
+developed in the companion monograph (footnote, p.~1), of which this
+paper is the self-contained applied chapter.
+
+\section{Limitations and outlook}
+
+The dynamical results are linearizations, and the simulations quantify
+the nonlinear corrections at the few-percent level for realistic $K$;
+Thm.~\ref{thm:iso}'s constant, in particular, is $K$ only to leading
+order. The Arena validation tests the estimation law; catching the
+tracking law (Thm.~\ref{thm:track}) in the wild requires a longitudinal
+pool with thin bridges --- historical chess federation data is the
+natural target, but game-level archives at the required scale are not
+freely available. The era experiment treats the two collections as
+exchangeable judge populations; drift in judging standards would appear
+as a common shock and cancel from gaps, but interactions between judge
+mix and model identity would not, and bounding them is future work.
+
+\begin{thebibliography}{9}
+\bibitem{zermelo1929} E.~Zermelo.
+Die Berechnung der Turnier-Ergebnisse als ein Maximumproblem der
+Wahrscheinlichkeitsrechnung. \emph{Math.\ Z.}, 29:436--460, 1929.
+\bibitem{bradleyterry1952} R.~A.~Bradley and M.~E.~Terry.
+Rank analysis of incomplete block designs: I.\ The method of paired
+comparisons. \emph{Biometrika}, 39:324--345, 1952.
+\bibitem{elo1978} A.~E.~Elo.
+\emph{The Rating of Chessplayers, Past and Present}. Arco, 1978.
+\bibitem{glickman1999} M.~E.~Glickman.
+Parameter estimation in large dynamic paired comparison experiments.
+\emph{J.\ R.\ Stat.\ Soc.\ C}, 48:377--394, 1999.
+\bibitem{trueskill2006} R.~Herbrich, T.~Minka, and T.~Graepel.
+TrueSkill: a Bayesian skill rating system. \emph{NeurIPS}, 2006.
+\bibitem{doylesnell1984} P.~G.~Doyle and J.~L.~Snell.
+\emph{Random Walks and Electric Networks}. MAA, 1984.
+\bibitem{ghoshboydsaberi2008} A.~Ghosh, S.~Boyd, and A.~Saberi.
+Minimizing effective resistance of a graph. \emph{SIAM Review},
+50(1):37--66, 2008.
+\bibitem{mandt2017} S.~Mandt, M.~D.~Hoffman, and D.~M.~Blei.
+Stochastic gradient descent as approximate Bayesian inference.
+\emph{JMLR}, 18(134):1--35, 2017.
+\bibitem{chiang2024} W.-L.~Chiang et al.
+Chatbot Arena: an open platform for evaluating LLMs by human preference.
+\emph{ICML}, 2024.
+\end{thebibliography}
+
+\end{document}
