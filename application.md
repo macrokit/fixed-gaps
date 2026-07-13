@@ -6,8 +6,9 @@ predicts that is not naturally reached from existing viewpoints. This
 chapter is the response: one domain worked end to end, from the framework's
 concepts to falsifiable quantitative laws to numerical verification. The
 simulation code is in [simulations/ratings_sim.py](simulations/ratings_sim.py);
-all numbers below are from the committed run
-([simulations/results.txt](simulations/results.txt)).*
+all numbers below are from the committed runs
+([simulations/results.txt](simulations/results.txt),
+[simulations/results_arena.txt](simulations/results_arena.txt)).*
 
 The domain is **pairwise-comparison rating systems** — chess Elo, sports
 rankings, and LLM leaderboards such as Chatbot Arena — chosen because they
@@ -24,8 +25,11 @@ skills is **graph-independent** — a surprise the framework forces you to
 notice and the rating literature has little reason to ask about (P2). And
 when true skills drift, the resistance law returns as the *tracking* error,
 with a computable correction: mean reversion grounds the network (P3). Each
-law is verified by simulation below; the third also yields a matchmaking
-design rule and a derivation of chess's era-comparison problem.
+law is verified by simulation below — and P1 is additionally verified on
+**real Chatbot Arena data** (39,241 battles, 60 models, 1,770 pairs) with a
+zero-parameter fit: slope 1.035 against the theoretical 1.0, $R^2 = 0.958$
+(§6). The third law also yields a matchmaking design rule and a derivation
+of chess's era-comparison problem.
 
 ---
 
@@ -214,9 +218,54 @@ instability, grounding, and bridge theorems — the same mathematics that
 governed crystals and kinship hierarchies in finale.md, now producing
 numbers in a domain with abundant public data.
 
-Limitations, plainly: the verification is simulation, not yet real data;
-the derivations are linearizations (the few-percent excesses in §3 are the
-visible nonlinear corrections); and prediction 2 awaits a run against
-actual leaderboard battle logs, which is the natural next step and requires
-only public datasets and the estimator already implemented in
-`ratings_sim.py`.
+Limitations, plainly: P2–P4 are verified in simulation, not yet on live
+rating pools; the derivations are linearizations (the few-percent excesses
+in §3 are the visible nonlinear corrections). P1, however, has now been
+tested on real data:
+
+---
+
+## 6. The empirical run: Chatbot Arena
+
+Prediction 2 of §4 was tested against real leaderboard data: the public
+Arena human-preference dataset (`lmarena-ai/arena-human-preference-55k`;
+57,477 battles). Filtering to decisive battles and models with at least
+200 of them leaves **39,241 battles among 60 models** over 1,145 distinct
+model pairings (65% of possible pairs — a dense but far from complete
+graph). Procedure ([simulations/arena_analysis.py](simulations/arena_analysis.py),
+output in [simulations/results_arena.txt](simulations/results_arena.txt)):
+fit Bradley–Terry ratings by maximum likelihood; compute the *predicted*
+variance of every pairwise rating gap as the effective resistance in the
+battle graph with Fisher conductances $c_e = n_e\, p_e (1 - p_e)$; compare
+against the *empirical* variance from 200 bootstrap resamples of the
+battles. The theory has **no free parameters**: the predicted regression
+slope is exactly 1.
+
+Result, over all $\binom{60}{2} = 1{,}770$ model pairs:
+
+$$\text{slope} = 1.035 \quad (\text{theory } 1.0), \qquad
+\text{corr} = 0.979, \qquad R^2_{\text{through origin}} = 0.958 .$$
+
+The resistance law is not approximately right on Arena — it is
+quantitatively right, at the few-percent level, across every pair of
+models simultaneously, including the majority of pairs that never fought
+each other directly.
+
+Two honest observations. First, on this graph the naive predictor
+$1/n_i + 1/n_j$ (per-model battle counts) also correlates well with the
+bootstrap variance (log–log correlation 0.956, versus 0.987 for
+resistance): Arena's battle graph is dense, and in dense graphs the
+resistance *reduces to* approximately the naive formula — the framework
+explains why the folk heuristic works there, and predicts exactly where it
+fails: clustered or chain-like comparison graphs (new-model clusters,
+cross-era chess, cross-league sport), where resistance and battle counts
+decouple. That decoupled regime is where the design rule of §4.3 pays.
+Second, the few-percent slope excess (1.035) has the expected sign:
+bootstrap variance includes the mild extra dispersion that the Fisher
+lower bound does not.
+
+With this, the chapter's ledger stands: P1 verified on real data with a
+zero-parameter fit; P2–P4 verified in controlled simulation; the remaining
+open empirical item is catching P3's grounded-resistance drift in a
+longitudinal rating pool (chess federation data across decades is the
+natural target).

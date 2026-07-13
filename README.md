@@ -69,7 +69,9 @@ order, potential differences.
   (chess Elo, LLM leaderboards) as defended gap networks. Three laws
   derived and verified in simulation ([simulations/](simulations/)):
   estimation error of any rating gap = effective resistance in the match
-  graph (slope ≈ 1.0, R² up to 0.99); stationary Elo churn with static
+  graph — verified in simulation (slope ≈ 1.0, R² up to 0.99) **and on
+  real Chatbot Arena data**: 39,241 battles, 60 models, all 1,770 pairs,
+  zero-parameter fit with slope 1.035 and R² 0.958; stationary Elo churn with static
   skills is **graph-independent** (the isotropy surprise — noise and
   defense enter through the same edges); and tracking error under skill
   drift follows a *grounded* resistance law (verified to 3% on the path

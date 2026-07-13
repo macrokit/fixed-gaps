@@ -1,0 +1,9 @@
+decisive battles: 39241   models kept (>= 200): 60
+battle-graph edges: 1145 of 1770 possible (density 0.65)
+
+P1 on real data: bootstrap Var(gap) vs Fisher resistance, 1770 pairs
+  slope = 1.035 (theory 1.0)   corr = 0.979   R2(through origin) = 0.958
+  log-log corr with bootstrap variance: resistance             0.987
+  log-log corr with bootstrap variance: naive 1/n_i + 1/n_j    0.956
+  well-fought yet uncertain: chatglm3-6b vs fastchat-t5-3b  min battles = 695, pred sd = 0.137, boot sd = 0.145
+  lightly-fought yet certain: gpt-3.5-turbo-0613 vs solar-10.7b-instruct-v1.0  min battles = 614, pred sd = 0.088, boot sd = 0.094
