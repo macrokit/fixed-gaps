@@ -285,13 +285,28 @@ structure in a quotient group (part 2, Thm E).
 
 ## 7. What remains open
 
+*All three problems below are resolved in [frontier.md](frontier.md).*
+
 1. **Beyond BV:** classify readings of bounded mean oscillation or almost
    periodic type; is every bounded recurrent reading asymptotically almost
    periodic under natural constraints on $F$?
+   **Resolved (no):** $\sin(\log t)$ is bounded, recurrent, and not
+   asymptotically almost periodic — it is periodic under the *dilation*
+   flow. Recurrence, like fixedness, is relative to a one-parameter group
+   (frontier.md §1).
 2. **Noisy drift:** with $x(t)$ a random walk with drift, which parts of the
    classification survive in distribution? (Conjecture: Thm B holds with
    $d/t$ replaced by $d/\mathbb{E}x(t)$ plus a $O(t^{-1/2})$ fluctuation
    term.)
+   **Resolved:** the conjectured form is correct, but the fluctuation term
+   dominates: felt order survives only to a horizon
+   $t^\ast \asymp (\Delta d)^2/\sigma^2$, the only noise-proof frozen
+   readings are affine in the gap, and the present's information about a
+   gap decays like $1/t$ unless records are kept (frontier.md §2).
 3. **Multi-pair readings:** signatures of functions of $n$ objects' states
    under the diagonal drift — where the cross-ratio and birth-order
    invariants of theory.md §8.5 should reappear as the frozen class.
+   **Resolved:** $n$-ary frozen readings are exactly functions of the gap
+   matrix; gap → ratio → cross-ratio is one construction at levels
+   $k = 1, 2, 3$ of the sharp-transitivity ladder, which provably terminates
+   (Tits), leaving birth order as the final invariant (frontier.md §3).

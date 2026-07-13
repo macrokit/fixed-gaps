@@ -28,6 +28,16 @@ order, potential differences.
   decays exactly like $d/t$, and felt gaps compress but never reorder), and
   the *phase gap* (anniversary structure is itself a fixed gap, valued in a
   circle group — ritual as the phenomenology of quotient torsors).
+- **[frontier.md](frontier.md)** — resolutions of the next three open
+  problems: recurrence is relative to a one-parameter group (calendar vs
+  "doubling" anniversaries; $\sin(\log t)$ as counterexample); noise leaves
+  gaps fixed in expectation but buries felt order past a horizon quadratic
+  in the gap difference, collapses the frozen readings to affine ones, and
+  makes the present forget the past at rate $\sqrt{t}$ — rituals keep gaps
+  *felt*, records keep them *known*; and the invariant tower gap → ratio →
+  cross-ratio is one sharp-transitivity construction that provably
+  terminates (Tits), leaving **birth order** as the invariant that survives
+  both maximal symmetry and maximal noise.
 
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant

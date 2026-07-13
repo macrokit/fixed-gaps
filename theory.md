@@ -327,6 +327,12 @@ characteristic time-signatures of that motion.
    cross-ratios. The cross-ratio — the fixed gap of projective geometry — is
    a 4-ary example, suggesting a hierarchy: which geometries have no fixed
    binary gaps at all, only higher-arity ones?
+   **Resolved in [frontier.md](frontier.md) §3:** the hierarchy is the
+   sharp-transitivity ladder — a sharply $k$-transitive group has its first
+   invariant at arity $k+1$ (gap, ratio, cross-ratio at $k = 1, 2, 3$) —
+   and by Tits's theorem on sharply 4-transitive groups the ladder
+   terminates at the cross-ratio, leaving order type as the sole invariant
+   of maximal symmetry.
 6. **Classifying readings.** Given a fixed-gap substrate, classify all
    readings by asymptotic behavior. Conjecture (informal): under mild
    regularity, every reading of an additively drifting pair decomposes into
