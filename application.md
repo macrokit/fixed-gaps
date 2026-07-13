@@ -264,8 +264,57 @@ Second, the few-percent slope excess (1.035) has the expected sign:
 bootstrap variance includes the mild extra dispersion that the Fisher
 lower bound does not.
 
+---
+
+## 7. The era structure, measured
+
+The framework's distinctive prediction — the one the folk heuristic cannot
+make — concerns *clustered* comparison graphs. Merging the two public
+Arena collections produces exactly one: the 55k dataset (2023–early 2024)
+and the 100k dataset (June–August 2024) share only **5 models**
+(`gpt-3.5-turbo-0125`, three `gpt-4` variants, `mixtral-8x7b`). The merged
+graph ([simulations/arena_era.py](simulations/arena_era.py),
+[results_era.txt](simulations/results_era.txt)) has 104,419 decisive
+battles among 108 models: 55 exclusive to era 1, 48 exclusive to era 2,
+and a 5-model bridge through which **every** cross-era comparison — all
+$55 \times 48 = 2{,}640$ of them — must route, because era-exclusive
+models never coexisted to fight.
+
+Findings:
+
+1. **The resistance law holds on the clustered graph** exactly as on the
+   dense one: slope 1.041, correlation 0.982, $R^2 = 0.963$ over all
+   5,778 pairs.
+2. **Calibration splits the two predictors, as predicted.** Calibrating
+   the count heuristic on within-era pairs and evaluating both predictors
+   by the median ratio of bootstrap variance to prediction:
+   resistance is 1.01 within-era and 1.01 cross-era — *identically
+   calibrated in both regimes with no adjustment* — while the count
+   heuristic reads 0.92 within-era and 1.08 cross-era, a systematic 17%
+   spread in the predicted direction (it underestimates cross-era
+   uncertainty because it cannot see that the information must funnel
+   through the bridge).
+3. **The bridge is load-bearing and quantifiably so.** Deleting a single
+   bridge model's battles raises the median cross-era resistance by up to
+   8% (`gpt-4-0613` is the biggest single carrier); deleting all five
+   disconnects the eras entirely — cross-era gaps become *infinitely*
+   uncertain. The comparability of 103 models across one year of LLM
+   history rests, in a precise quantitative sense, on five survivors.
+4. **The honest twist: Arena's era problem is mild, and that is the
+   design rule working.** The cross-era uncertainty penalty is only ~8%
+   (median cross-era gap sd 0.102 vs within-era 0.098 at matched battle
+   counts) — because the five bridges are battle-rich: the platform keeps
+   old flagships in rotation, which is precisely the "long-range edges"
+   prescription of §4.3 and finale.md §2.4. Chess, whose bridges (long
+   careers spanning eras) are thin and unreplayable, is the same graph
+   with weak bridges — which is why its era problem is severe and
+   Arena's is not. The theory doesn't just predict failures; it explains
+   an engineering success.
+
 With this, the chapter's ledger stands: P1 verified on real data with a
-zero-parameter fit; P2–P4 verified in controlled simulation; the remaining
-open empirical item is catching P3's grounded-resistance drift in a
-longitudinal rating pool (chess federation data across decades is the
-natural target).
+zero-parameter fit, in both dense and clustered regimes; the
+calibration split between resistance and the count heuristic confirmed in
+the clustered regime; P2–P4 verified in controlled simulation. The
+remaining open empirical item is catching P3's grounded-resistance drift
+law in a longitudinal pool with thin bridges — chess federation data
+across decades remains the natural target.

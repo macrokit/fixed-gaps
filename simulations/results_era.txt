@@ -1,0 +1,18 @@
+merged decisive battles: 104419   models: 108 (era-1 only 55, era-2 only 48, bridge 5)
+
+global resistance law on the merged (clustered) graph: slope = 1.041   corr = 0.982   R2 = 0.963
+
+calibrate naive count predictor on within-era pairs (c = 5.15); median ratio boot/prediction:
+  resistance   within-era    1.01
+  resistance   cross-era     1.01
+  naive counts within-era    0.92
+  naive counts cross-era     1.08
+  median boot sd: within-era 0.098, cross-era 0.102 (median min-battles: within 810, cross 799)
+
+bridge dependence (Fisher resistance, median over cross-era pairs):
+  full graph: 0.0101
+  without gpt-3.5-turbo-0125          : 0.0102
+  without gpt-4-0125-preview          : 0.0103
+  without gpt-4-0613                  : 0.0109
+  without gpt-4-1106-preview          : 0.0108
+  without mixtral-8x7b-instruct-v0.1  : 0.0106
