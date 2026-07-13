@@ -64,6 +64,22 @@ order, potential differences.
   supplies the ending: the world does not *have* a gap structure — it *is*
   one, and spacetime is its reading.
 
+- **[application.md](application.md)** — the worked application, answering
+  an external review's request for a "killer application": rating systems
+  (chess Elo, LLM leaderboards) as defended gap networks. Three laws
+  derived and verified in simulation ([simulations/](simulations/)):
+  estimation error of any rating gap = effective resistance in the match
+  graph (slope ≈ 1.0, R² up to 0.99); stationary Elo churn with static
+  skills is **graph-independent** (the isotropy surprise — noise and
+  defense enter through the same edges); and tracking error under skill
+  drift follows a *grounded* resistance law (verified to 3% on the path
+  graph). Corollaries: chess's era problem as a theorem, resistance-based
+  leaderboard confidence intervals, and a matchmaking design rule.
+- **[review-response.md](review-response.md)** — an external review of the
+  monograph (summarized) and the response, including what the review got
+  right, where its correctness assessment fell short, and how
+  application.md answers its main criticism.
+
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant
 readings over an invariant substrate.**

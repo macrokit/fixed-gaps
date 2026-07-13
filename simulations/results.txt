@@ -1,0 +1,17 @@
+P1: Var(MLE gap error) vs (4/m) R_eff  [theory: slope 1, R2 ~ 1]
+  path          slope = 1.006   R2 = 0.992
+  cycle         slope = 1.024   R2 = 0.964
+  two-cluster   slope = 1.020   R2 = 0.994
+  3-regular     slope = 1.027   R2 = 0.927
+  complete      slope = 1.017   R2 = -0.000
+
+P2: static skills, online Elo  [theory: Var(gap) = K = 0.1, flat in R_eff]
+  path          mean = 0.1060   low-R_eff pairs = 0.1056   high-R_eff pairs = 0.1064
+  two-cluster   mean = 0.1055   low-R_eff pairs = 0.1056   high-R_eff pairs = 0.1055
+  complete      mean = 0.1059   low-R_eff pairs = 0.1057   high-R_eff pairs = 0.1062
+
+P3: drifting skills  [theory: Var = K + slope * R_eff]
+  path          intercept = 0.1064 (K = 0.1)   slope = 0.00206 (naive 0.00352, exact grounded 0.00213)   R2 = 0.948
+  two-cluster   intercept = 0.1053 (K = 0.1)   slope = 0.00964 (naive 0.01024, exact grounded 0.00812)   R2 = 0.898
+
+P3 design: worst-pair R_eff  base = 1.000   +1 bridge = 0.778   +1 intra = 0.995
