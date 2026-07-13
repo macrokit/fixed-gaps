@@ -67,3 +67,5 @@ order, potential differences.
 Central slogan: **what persists between things are relations, not
 conditions; what we experience as change is the drift of non-invariant
 readings over an invariant substrate.**
+
+Licensed under [CC BY 4.0](LICENSE).
