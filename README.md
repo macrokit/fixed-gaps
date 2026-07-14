@@ -9,6 +9,7 @@ paper (7 pages): *Rating Gaps and Effective Resistance: Exact Fluctuation
 Laws for Elo and Bradley–Terry Systems* — the three laws, proofs,
 simulations, and the Arena validations, with related work and
 bibliography. LaTeX source in [paper/](paper/).
+Published on Zenodo: [doi:10.5281/zenodo.21340469](https://doi.org/10.5281/zenodo.21340469)
 
 An essay and a mathematical theory about **fixed gaps**: relations between
 two entities — people or objects — that are frozen the moment they become
