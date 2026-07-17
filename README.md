@@ -71,6 +71,28 @@ order, potential differences.
   supplies the ending: the world does not *have* a gap structure — it *is*
   one, and spacetime is its reading.
 
+- **[einstein.md](einstein.md)** — an addendum isolating the *Einstein
+  inference*: postulate one invariant, compute its stabilizer group, read
+  off what must be demoted from invariant to reading (a Galois-connection
+  closure). The rigidity theorem, Zeeman's theorem, and 1905 itself are
+  instances — special relativity recast as a ledger renegotiation
+  (simultaneity, the cone, relativity of motion: pick two). Run once more
+  on noisy gap networks, the inference yields **gap dilation**: observers
+  agree on every gap but disagree lawfully on its precision, with variance
+  ratios equal to effective-resistance ratios; Thomson's principle plays
+  the twin paradox (the electrical route is the most certain, as the
+  straight worldline is the oldest); and resistance is itself a second
+  fixed gap — additive exactly on chain-like topologies. The era problem
+  becomes dilation at historical scale. Admitting observers completes the
+  answer to Einstein's question: knowledge acts as a short circuit
+  (conditioning on a measured vantage = fusing it to one node, verified
+  numerically), one absolute reading is pure gauge, learning is
+  Rayleigh-monotone (an archive is a *shared vantage*), and two observers
+  can lawfully order the precisions of two gaps oppositely — the exact
+  twin of the relativity of simultaneity, with the pair's *resistance
+  interval* as the light-cone analogue that makes some confidence
+  orderings absolute.
+
 - **[application.md](application.md)** — the worked application, answering
   an external review's request for a "killer application": rating systems
   (chess Elo, LLM leaderboards) as defended gap networks. Three laws
