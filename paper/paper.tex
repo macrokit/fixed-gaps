@@ -82,9 +82,15 @@ to all players enters nowhere: it cancels from every gap identically.
 variance of the maximum-likelihood estimate of any rating gap --- between
 any two players, whether or not they ever met --- equals the effective
 resistance between them in the match graph with Fisher conductances. The
-ingredients are classical; the identification of the inverse Fisher
-information as a resistance, and the consequences drawn from it, appear
-not to have been exploited in the rating literature.
+structurally closest prior work is Boumal et al.\ \cite{boumal2014},
+who derive Cram\'er-Rao bounds for rotation synchronization as the
+pseudoinverse of a weighted graph Laplacian --- the same identification;
+their setting is SE$(d)$/SO$(d)$-valued signals, not rating scalars.
+R\"ottger et al.\ \cite{rottger2022} connect optimal design of
+Bradley--Terry experiments to graph Laplacians but do not state the
+per-pair variance formula.  The explicit identification
+$\Var(\hat r_i - \hat r_j) = \Reff(i,j)$ in the rating setting, and
+the consequences drawn from it, appear to be new.
 \item \textbf{Isotropy of online Elo} (Thm.~\ref{thm:iso}). With static
 skills, the stationary fluctuation of the rating gap under online Elo
 with update factor $K$ is $\Var(r_i - r_j) = K$ for every pair, on every
@@ -344,20 +350,40 @@ Arena's bridge-rich rotation policy is the design rule implemented.
 The Bradley--Terry model and its MLE date to \cite{zermelo1929,
 bradleyterry1952}; Elo's system to \cite{elo1978}; measurement-error
 refinements include Glicko \cite{glickman1999} and TrueSkill
-\cite{trueskill2006}. Effective resistance is classical in the
-random-walk literature \cite{doylesnell1984} and appears in optimal
-experiment design and network analysis \cite{ghoshboydsaberi2008}; the
-interpretation of SGD's stationary distribution as an
-Ornstein--Uhlenbeck process follows \cite{mandt2017}. Chatbot Arena and
-its Bradley--Terry leaderboard are described in \cite{chiang2024}, which
-computes bootstrap confidence intervals; our Thm.~\ref{thm:est} gives
-those intervals a closed structural form, and \S\ref{sec:arena} verifies
-it. We are not aware of prior statements of the isotropy law
-(Thm.~\ref{thm:iso}) or of the grounded-resistance tracking law
-(Thm.~\ref{thm:track}) in this setting. The general framework relating
-noise location, defended invariants, and effective resistance is
-developed in the companion monograph (footnote, p.~1), of which this
-paper is the self-contained applied chapter.
+\cite{trueskill2006}. Chatbot Arena and its Bradley--Terry leaderboard
+are described in \cite{chiang2024}, which uses bootstrap confidence
+intervals; our Thm.~\ref{thm:est} gives those intervals a closed
+structural form, and \S\ref{sec:arena} verifies it. For calibrated Elo
+confidence intervals via conformal prediction, see \cite{kargi2026};
+\cite{magnot2026} studies noise calibration and admissible ranking
+regions in nonreciprocal pairwise comparisons.
+
+Effective resistance is classical in the random-walk literature
+\cite{doylesnell1984} and minimizing it is studied in
+\cite{ghoshboydsaberi2008}. The structurally closest prior work to
+Law~(i) is Boumal et al.\ \cite{boumal2014}, who show that the
+Cram\'er-Rao bound for rotation \emph{synchronization} equals the
+pseudoinverse of a weighted graph Laplacian --- the same structure; their
+setting is SE$(d)$/SO$(d)$-valued signals, not rating scalars.
+R\"ottger et al.\ \cite{rottger2022} connect optimal design of
+Bradley--Terry comparisons to graph Laplacians via the matrix-tree
+theorem but do not state the per-pair variance formula or the resistance
+interpretation. To our knowledge, the identification
+$\Var(\hat r_i - \hat r_j) = \Reff(i,j)$ in the rating setting, and the
+consequences drawn from it, are new.
+
+For Law~(ii), Olesker-Taylor and Zanetti \cite{olesker2024} analyze
+stationary Elo via Markov chains and provide spectral-gap-dependent
+upper bounds on average gap variance; our isotropy result
+(Thm.~\ref{thm:iso}) is strictly sharper --- an exact formula showing
+the spectral dependence cancels entirely. The interpretation of SGD's
+stationary distribution as an Ornstein--Uhlenbeck process follows
+\cite{mandt2017}. We are not aware of prior statements of the
+grounded-resistance tracking law (Thm.~\ref{thm:track}) in this
+setting. The general framework relating noise location, defended
+invariants, and effective resistance is developed in the companion
+monograph (footnote, p.~1), of which this paper is the self-contained
+applied chapter.
 
 \section{Limitations and outlook}
 
@@ -398,6 +424,21 @@ Stochastic gradient descent as approximate Bayesian inference.
 \bibitem{chiang2024} W.-L.~Chiang et al.
 Chatbot Arena: an open platform for evaluating LLMs by human preference.
 \emph{ICML}, 2024.
+\bibitem{boumal2014} N.~Boumal, A.~Singer, P.-A.~Absil, and V.~D.~Blondel.
+Cram\'er-Rao bounds for synchronization of rotations.
+\emph{Information and Inference}, 3(1):1--39, 2014.
+\bibitem{rottger2022} F.~R\"ottger, T.~Kahle, and R.~Schwabe.
+Optimal designs for discrete choice models via graph Laplacians.
+\emph{J.\ Stat.\ Theory Pract.}, 2022.
+\bibitem{olesker2024} S.~Olesker-Taylor and L.~Zanetti.
+An analysis of Elo rating systems via Markov chains.
+\emph{NeurIPS}, 2024.
+\bibitem{kargi2026} B.~Kargi and D.~Salinas.
+From uncertain judgments to calibrated rankings: conformal Elo estimation
+for LLM evaluation. arXiv:2606.13221, 2026.
+\bibitem{magnot2026} J.-P.~Magnot.
+Noisy nonreciprocal pairwise comparisons: scale variation, noise
+calibration, and admissible ranking regions. arXiv:2604.04588, 2026.
 \end{thebibliography}
 
 \end{document}
